@@ -1,4 +1,5 @@
 FROM heroku/miniconda
+#FROM alpine:latest
 
 # Grab requirements.txt.
 ADD ./webapp/requirements.txt /tmp/requirements.txt
@@ -10,6 +11,10 @@ RUN pip install -qr /tmp/requirements.txt
 ADD ./webapp /opt/webapp/
 WORKDIR /opt/webapp
 
-RUN conda install scikit-learn
+RUN conda install bokeh
+RUN conda install pandas
+RUN conda install numpy
+RUN conda install requests
+RUN conda install simplejson
 
 CMD gunicorn --bind 0.0.0.0:$PORT wsgi
