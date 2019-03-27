@@ -1,28 +1,38 @@
-# Miniconda on Heroku Example App
+# Flask on Heroku
 
-This repository contains two things:
+This project is intended to help you tie together some important concepts and
+technologies from the 12-day course, including Git, Flask, JSON, Pandas,
+Requests, Heroku, and Bokeh for visualization.
 
-- A `Dockerfile`, which installs [scikit-learn](http://scikit-learn.org/stable/) with [miniconda](http://conda.pydata.org/miniconda.html), and a few [pip](https://pip.pypa.io/en/stable/) dependencies.
-- A [Flask](http://flask.pocoo.org) `webapp`, which utilizes basic functionality of `scikit-learn`.
+The repository contains a basic template for a Flask configuration that will
+work on Heroku.
 
-All [Anaconda packages](https://docs.continuum.io/anaconda/pkg-docs) are supported—`scikit-learn` is just being used here as an example. 
+We will use docker to create a container which allows us to use a wider variety of packages than a bare heroku install and get around the heroku slug limit (useful for deploying scikit-learn models).  This is motivated by [python-miniconda](https://github.com/heroku-examples/python-miniconda)
 
-## ☤ Advantages over [Conda Buildpack](https://github.com/kennethreitz/conda-buildpack):
+A [finished example](https://lemurian.herokuapp.com) that demonstrates some basic functionality.
 
-- No slug size limit (Anaconda packages can be very large). 
-- Exact Miniconda environment, from Continuum Analytics.
+## Step 1: Setup and deploy
+- Look up how to install docker here [Docker Documentation](https://docs.docker.com/engine/installation/)
+- Git clone the existing template repository.
+`app/requirements.txt` and `app/conda-requirements.txt`  contain some default settings which will be installed by `pip` and `conda` respectively.
+- There is some boilerplate HTML in `app/templates/`
+- Create Heroku application with `heroku create <app_name>` or leave blank to auto-generate a name.
+- Login to container with `heroku container:login`
+- Deploy to Heroku: `heroku container:push web`
+- Release image on Heroku: `heroku container:release web`
+- You should be able to see your site at `https://<app_name>.herokuapp.com`
+- A useful reference is the Heroku [quickstart guide](https://devcenter.heroku.com/articles/getting-started-with-python-o).
 
-## ☤ Deploy this Application:
+## Step 2: Get data from API and put it in pandas
+- Use the `requests` library to grab some data from a public API. This will often be in JSON format, in which case `simplejson` will be useful.
+- Build in some interactivity by having the user submit a form which determines which data is requested.
+- Create a `pandas` dataframe with the data.
 
-Deploy with the [Container Registry and Runtime](https://devcenter.heroku.com/articles/container-registry-and-runtime):
+## Step 3: Use Bokeh to plot pandas data
+- Create a Bokeh plot from the dataframe.
+- Consult the Bokeh [documentation](http://bokeh.pydata.org/en/latest/docs/user_guide/embed.html)
+  and [examples](https://github.com/bokeh/bokeh/tree/master/examples/embed).
+- Make the plot visible on your website through embedded HTML or other methods - this is where Flask comes in to manage the interactivity and display the desired content.
+- Some good references for Flask: [This article](https://realpython.com/blog/python/python-web-applications-with-flask-part-i/), especially the links in "Starting off", and [this tutorial](https://github.com/bev-a-tron/MyFlaskTutorial).
 
-     $ heroku plugins:install heroku-container-registry
-     $ heroku container:login
-     
-     $ git clone https://github.com/heroku-examples/python-miniconda
-     $ cd python-miniconda
-     
-     $ heroku create
-     $ heroku container:push web
-
-✨🍰✨
+Modified by Andrew LaCroix 2019-03-27

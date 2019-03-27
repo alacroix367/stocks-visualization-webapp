@@ -81,7 +81,7 @@ def index():
     return render_template('home_SV.html', script=script, div=div)
 
 if __name__ == '__main__':
-#  app.run(port=33507)
-  app.run(debug=True)
+  app.run(port=33507)
+#  app.run(debug=True)
 #if __name__ == '__main__':
 #    app.run(host='0.0.0.0')

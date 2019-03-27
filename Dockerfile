@@ -1,20 +1,12 @@
-FROM heroku/miniconda
-#FROM alpine:latest
+FROM continuumio/miniconda3
 
-# Grab requirements.txt.
-ADD ./webapp/requirements.txt /tmp/requirements.txt
+#ADD ./app/requirements.txt /tmp/requirements.txt
+ADD ./app/conda-requirements.txt /tmp/conda-requirements.txt
 
-# Install dependencies
-RUN pip install -qr /tmp/requirements.txt
+#RUN pip install -qr /tmp/requirements.txt 
+RUN conda install --yes --file /tmp/conda-requirements.txt
 
-# Add our code
-ADD ./webapp /opt/webapp/
-WORKDIR /opt/webapp
-
-RUN conda install bokeh
-RUN conda install pandas
-RUN conda install numpy
-RUN conda install requests
-RUN conda install simplejson
+ADD ./app /opt/app/
+WORKDIR /opt/app
 
 CMD gunicorn --bind 0.0.0.0:$PORT wsgi
